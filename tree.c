@@ -1,5 +1,5 @@
 include "stdio.h"
 int main{}
 {
-    print("test")
+    print("test 1")
 }
