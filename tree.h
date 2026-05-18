@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct datas{
     int kol_prim; //количество примеров в датасте
