@@ -20,3 +20,31 @@ static float gini(int *prav,int num_prav)
     free(count);
     return g;
 }
+
+Tree* create_tree(int max_glub,int min_split,int kol_priz)
+{
+    Tree* dub=(Tree*)malloc(sizeof(Tree*));
+
+    dub->koren=NULL;
+    dub->max_gulb=max_glub;
+    dub->min_split=min_split;
+    dub->kol_priz=kol_priz;
+
+    return dub;
+}
+
+void free_Node(Node* node)
+{
+    if(node->uzel!=0)
+    {
+        free(node->left);
+        free(node->right);
+    }
+    free(node);
+}
+
+void del_tree(Tree* dub)
+{
+    free(dub->koren);
+    free(dub);
+}

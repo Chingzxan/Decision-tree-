@@ -27,4 +27,9 @@ typedef struct Tree{
     int max_glub;//глубина
     int min_split;//количество признаков или данных для разбиения
     int kol_priz;// рандомное количество признаков 
-}
+}Tree;
+
+Tree* create_tree(int max_glub,int min_split,int kol_priz);
+
+void del_tree(Tree* dub);
+
