@@ -32,4 +32,4 @@ typedef struct Tree{
 Tree* create_tree(int max_glub,int min_split,int kol_priz);
 
 void del_tree(Tree* dub);
-
+void free_Node(Node *node);

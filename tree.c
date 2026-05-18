@@ -45,6 +45,6 @@ void free_Node(Node* node)
 
 void del_tree(Tree* dub)
 {
-    free(dub->koren);
+    free_Node(dub->koren);
     free(dub);
 }
