@@ -33,3 +33,7 @@ Tree* create_tree(int max_glub,int min_split,int kol_priz);
 
 void del_tree(Tree* dub);
 void free_Node(Node *node);
+
+
+Datas* create_datas(int num_priz,int num_features);
+void del_data(Datas* ds);

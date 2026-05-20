@@ -49,7 +49,7 @@ void del_tree(Tree* dub)
     free(dub);
 }
 
-static int popul_class(int * prav,int num_prav)// какой класс сколько встречается
+static int popul_class(int * prav,int num_prav)// какой класс больше всего встречается
 {
     if(num_prav == 0)return 0;
     int max_prav=0;
@@ -66,4 +66,28 @@ static int popul_class(int * prav,int num_prav)// какой класс скол
     }
     free(count);
     return popul;
+}
+
+Datas* create_datas(int num_prim,int num_features)
+{
+    Datas* ds =malloc(sizeof(Dataset));
+    ds->num_prim=num_prim;
+    ds->num_features=num_features;
+    ds->data=malloc(num_prim*sizeof(float*));
+    for(int i=0;i<num_prim;i++)
+    {
+        ds->data[i]=malloc(num_features*sizeof(float));
+    }
+    ds->prav=calloc(num_prim,sizeof(int));
+
+    return ds;
+}
+void free_datas(Datas* ds)
+{
+    for(int i = 0,i<ds->num_prim;i++)
+    {
+        free(ds->data[i]);
+    }
+    free(ds->data);
+    free(ds->prav);
 }
