@@ -104,3 +104,44 @@ void random_priznak(int *index,int n)//рандомное количество �
         index[j]=temp;
     }
 }
+
+Datas* load_data(char* file)
+{
+    FILE *f= fopen(file,"r");
+    
+    int stolb=0,strok=0;
+    char line[1000]
+    while(fgets(line,sizeof(line),f))
+    {
+        if(stolb==0)
+        {
+            char *token=strtok(line,',');
+            while(token)
+            {
+                strok++;
+                token=strtok(NULL,',');
+            }
+            strok--;//значение,а не признак
+        }
+        stolb++;
+    }
+    
+    rewind(f);
+
+    Datas* ds = create_datas(stolb,strok);
+    int prim_ind=0;
+    while(fgets(line,sizeof(line),f)&& prim_ind<stolb)
+    {
+        int priz_ind=0;
+        char *token=strtok(line,',');
+        while(token && priz_ind<strok)
+        {
+            ds->data[prim_ind][priz_ind++]=atof(token);
+            token=strtok(NULL,',');
+
+        }
+        ds->data[prim_ind++][priz_ind]=(token) ? atoi(token):0;
+    }
+    fclose(f);
+    return ds;
+}

@@ -39,3 +39,5 @@ Datas* create_datas(int num_priz,int num_features);
 void del_data(Datas* ds);
 
 void random_priz(int *index,int n);
+
+Datas* load_data(char *file);
