@@ -48,3 +48,22 @@ void del_tree(Tree* dub)
     free_Node(dub->koren);
     free(dub);
 }
+
+static int popul_class(int * prav,int num_prav)// какой класс сколько встречается
+{
+    if(num_prav == 0)return 0;
+    int max_prav=0;
+    for(int i=0;i<num_prav;i++)
+    {
+        if(prav[i]>max_prav)max_prav=prav[i];
+    }
+    int *count=calloc(max_prav+1,sizeoff(int));
+    for(int i=0;i<num_prav;i++)count[prav[i]]++;
+    int popul=0;
+    for(int i = 0;i<=max_prav;i++)
+    {
+        if(count[i]>popul)popul=i;
+    }
+    free(count);
+    return popul;
+}
