@@ -148,7 +148,7 @@ Datas* load_data(char* file)
 
 
 static void best_split(Datas *ds,int *index,int kol_index, 
-    int* feature_sub,int kol_sub,int* best_feature,float* best_thearshold,float* best_gain){
+    int* feature_sub,int kol_sub,int* best_feature,float* best_znach,float* best_gain){
 
     *best_gain = -1.0;
     int*curr_prav=malloc(kol_index * sizeof(int));
@@ -178,9 +178,41 @@ static void best_split(Datas *ds,int *index,int kol_index,
                 }
             }
         }
+        for(int g=0;g<kol_index-1;g++)
+        {
+            float znach =(values[order[g]]+values[order[g+1]])/2.0;
+            int left=0,int right=0;
+            for(int j =0;j<kol_index;j++)
+            {
+                if(values[j]<=znach)left++;
+                else right++;
+            }
+            if(left==0 ||right==0)continue;
+            int *left_prav=malloc(left*sizeof(int));
+            int *right_prav=malloc(right*sizeof(int));
 
+            int l=0,r=0;
+            for(int j=0;j<kol_index;j++)
+            {
+                if(values[j]<=znach)
+                    left_prav[l++]=ds->prav[index[j]];
+                else right_prav[r++]=ds->prav[index[j]];
+            }
         
-
+            float gini_left=gini(left_prav,left);
+            float gini_right=gini(right_prav,right);
+            float gini=parent_gini-((float)left/kol_index)*gini_left-((float)right/kol_index)*gini_right;
+        
+            if(gain>*best_gain)
+            {
+                *best_gain=gain;
+                *best_feature=feat;
+                *best_znach=znach;
+            }
+            free(left_prav);
+            free(right_prav);
+        }
+    free(values);
+    free(order);
     }
-
 }

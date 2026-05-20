@@ -41,3 +41,5 @@ void del_data(Datas* ds);
 void random_priz(int *index,int n);
 
 Datas* load_data(char *file);
+
+#endif
