@@ -145,3 +145,42 @@ Datas* load_data(char* file)
     fclose(f);
     return ds;
 }
+
+
+static void best_split(Datas *ds,int *index,int kol_index, 
+    int* feature_sub,int kol_sub,int* best_feature,float* best_thearshold,float* best_gain){
+
+    *best_gain = -1.0;
+    int*curr_prav=malloc(kol_index * sizeof(int));
+
+    for(int i =0;i<kol_index;i++)curr_prav[i]=ds->prav[index[i]];
+
+    float parent_gini=gini(curr_prav,kol_index);
+    free(curr_prav);
+    
+    for(int i = 0;i<kol_sub;i++)
+    {
+        int feat=feature_sub[i];
+        float *values=malloc(kol_index*sizeof(ind));
+        for(int g =0;g<kol_index;g++)values[g]=ds->data[index[i]][feat];
+
+        int *order=malloc(kol_index*sizeof(int));
+        for(int g=0;g<kol_index;g++)order[g]=g;
+        for(int g=0;g<kol_index-1;g++)
+        {
+            for(int j=g+1;j<kol_index;j++)
+            {
+                if(values[order[g]]>values[order[j]])
+                {
+                    int t=order[g];
+                    order[g]=order[j];
+                    order[j]=t;
+                }
+            }
+        }
+
+        
+
+    }
+
+}
