@@ -201,7 +201,7 @@ static void best_split(Datas *ds,int *index,int kol_index,
         
             float gini_left=gini(left_prav,left);
             float gini_right=gini(right_prav,right);
-            float gini=parent_gini-((float)left/kol_index)*gini_left-((float)right/kol_index)*gini_right;
+            float gain=parent_gini-((float)left/kol_index)*gini_left-((float)right/kol_index)*gini_right;
         
             if(gain>*best_gain)
             {
@@ -215,4 +215,36 @@ static void best_split(Datas *ds,int *index,int kol_index,
     free(values);
     free(order);
     }
+}
+
+static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth,int min_split,int num_priz_sub,int max_priz)
+{
+    Node *dub = malloc(sizeof(Node));
+
+    int all_same=1;
+    for(int i = 1; i<num_index;i++)
+    {
+        if(dub->prav[index[i]]!= dub->prav[index[0]])
+        {
+            all_same=0;
+            break;
+        }
+    }
+    if(all_same|| depth>=max_depth||num_index<min_split)
+    {
+        dub->uzel=1;
+        int* prav_sub=malloc(num_index*sizeof(int));
+        for(int i=0;i<num_index;i++)
+        {
+            prav_sub[i]=dub->prav[index[i]];
+            
+            dub->predict_class =popul_class(prav_sub,num_index);
+            free(prav_sub);
+
+            dub->left=NULL;
+            dub->right=NULL;
+        }
+
+    }
+    
 }
