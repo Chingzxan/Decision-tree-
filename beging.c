@@ -52,14 +52,14 @@ void fit_beg(BegModel * mod,Datas* ds)
         Datas* sluch=bootstrap_sample(ds);
         if(!sluch)
         {
-            fprintf(stderr,"Bootstrap ne razbil tree %d",i+1);
+            fprintf(stderr,"Bootstrap не смог разбить дерево %d",i+1);
             continue;
         }
         Tree* dub=create_tree(mod->max_glub,mod->min_split,mod ->kol_priz_sub);
         fit_tree(dub,sluch);
         mod->trees[i]=dub;
         free_datas(sluch);
-        printf("TREE %d/%d obuchen🌲",i+1,mod->kol_tree);
+        printf("Дерево %d/%d обучено🌲",i+1,mod->kol_tree);
     }
 }
 
