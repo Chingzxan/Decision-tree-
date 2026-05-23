@@ -4,7 +4,7 @@ static float gini(int *prav,int num_prav)
 {
     if (num_prav ==0)return 0.0;
     int max_class=0;
-    int g=1.0;//сам gini;
+    float g=1.0;//сам gini;
     for(int i=0;i<num_prav;i++)
     {
         if(prav[i]>max_class)max_class=prav[i];
@@ -35,6 +35,7 @@ Tree* create_tree(int max_glub,int min_split,int kol_priz)
 
 void free_Node(Node* node)
 {
+    if(!node)return 0;
     if(node->uzel!=0)
     {
         free(node->left);
@@ -82,7 +83,7 @@ Datas* create_datas(int kol_prim,int kol_priz)
 
     return ds;
 }
-void free_datas(Datas* ds)
+void del_data(Datas* ds)
 {
     for(int i = 0;i<ds->kol_prim;i++)
     {
@@ -94,7 +95,7 @@ void free_datas(Datas* ds)
 }
 
 
-void random_priznak(int *index,int n)//рандомное количество признаков 
+void random_priz(int *index,int n)//рандомное количество признаков 
 {
     for(int i=n-1;i>0;i--)
     {
@@ -140,7 +141,7 @@ Datas* load_data(char* file)
             token=strtok(NULL,",");
 
         }
-        ds->data[prim_ind++][priz_ind]=(token) ? atoi(token):0;
+        ds->prav[prim_ind++]=(token) ? atoi(token):0;
     }
     fclose(f);
     return ds;
@@ -161,7 +162,7 @@ static void best_split(Datas *ds,int *index,int kol_index,
     for(int i = 0;i<kol_sub;i++)
     {
         int feat=feature_sub[i];
-        float *values=malloc(kol_index*sizeof(int));
+        float *values=malloc(kol_index*sizeof(float));
         for(int g =0;g<kol_index;g++)values[g]=ds->data[index[i]][feat];
 
         int *order=malloc(kol_index*sizeof(int));
@@ -235,15 +236,15 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
         dub->uzel=1;
         int* prav_sub=malloc(kol_ind*sizeof(int));
         for(int i=0;i<kol_ind;i++)
-        {
             prav_sub[i]=ds->prav[index[i]];
             
-            dub->predict_class =popul_class(prav_sub,kol_ind);
-            free(prav_sub);
+        dub->predict_class =popul_class(prav_sub,kol_ind);
+        free(prav_sub);
 
-            dub->left=NULL;
-            dub->right=NULL;
-        }
+        dub->left=NULL;
+        dub->right=NULL;
+        return dub;
+
 
     }
     int* priz_pool=malloc(max_priz * sizeof(int));
