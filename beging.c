@@ -35,3 +35,26 @@ void freeModel (BegModel* mod)
     free(mod->trees);
     free(mod);
 }
+
+void fit_beg(BegModel * mod,Datas* ds)
+{
+    srand(time(NULL));
+    int max_prav=0;
+    for(int =0;i<ds->prim;i++)
+    {
+        if(ds->prav[i]>max_prav)max_prav=ds->prav[i];
+    }
+    mod->kol_class=max_prav+1;
+    mod->kol_priz=ds->kol_priz;
+
+    for(int i=0;i<mod->kol_tree;i++)
+    {
+        Datas* sluch=bootstrap_sample(ds);
+        if(!sluch)
+        {
+            fprintf(stderr,"Bootstrap ne razbil tree %d",i+1);
+            continue;
+        }
+        Tree* dub=create_tree
+    }
+}
