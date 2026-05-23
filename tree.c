@@ -230,15 +230,15 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
             break;
         }
     }
-    if(all_same|| depth>=max_depth||num_index<min_split)
+    if(all_same|| depth>=max_depth||kol_ind<min_split)
     {
         dub->uzel=1;
-        int* prav_sub=malloc(num_index*sizeof(int));
-        for(int i=0;i<num_index;i++)
+        int* prav_sub=malloc(kol_ind*sizeof(int));
+        for(int i=0;i<kol_ind;i++)
         {
             prav_sub[i]=ds->prav[index[i]];
             
-            dub->predict_class =popul_class(prav_sub,num_index);
+            dub->predict_class =popul_class(prav_sub,kol_ind);
             free(prav_sub);
 
             dub->left=NULL;
@@ -251,8 +251,8 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
     for(int i=0;i<max_priz;i++)priz_pool[i]=i;
     random_priz(priz_pool,max_priz);
 
-    int* priz_subset =malloc(num_priz_sub*sizeof(int));
-    for(int i=0;i<num_priz_sub;i++)
+    int* priz_subset =malloc(kol_priz_sub*sizeof(int));
+    for(int i=0;i<kol_priz_sub;i++)
     {
         priz_subset[i]=priz_pool[i];
     }
@@ -272,7 +272,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
         dub->uzel =1;
         int *prav_sub = malloc(kol_ind*sizeof(int));
         for(int i=0; i<kol_ind;i++)prav_sub[i]=ds->prav[index[i]];
-        dub->predict_class= popul_class(prav_sub,kol_index);
+        dub->predict_class= popul_class(prav_sub,kol_ind);
         free(prav_sub);
         dub->left = dub->right = NULL;
         return dub;
@@ -285,7 +285,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
     int* right_ind=malloc(kol_ind*sizeof(int));
 
     int l_count =0, r_count = 0;
-    for(int i=0;i<kol_index;i++)
+    for(int i=0;i<kol_ind;i++)
     {
         if(ds->data[index[i]][best_priz]<=best_razb)
          left_ind[l_count++]=index[i];
@@ -335,7 +335,7 @@ static int predict_node(Node* node ,float *prim)
 }
 int predict_tree(Tree* dub,float* sample)
 {
-    return predict_node(dub->uzel,sample);
+    return predict_node(dub->koren,sample);
 }
 
 int max_pred(int* schet_pred_tree,int kol_class)
