@@ -68,15 +68,15 @@ static int popul_class(int * prav,int num_prav)// какой класс боль
     return popul;
 }
 
-Datas* create_datas(int kol_prim,int kol_features)
+Datas* create_datas(int kol_prim,int kol_priz)
 {
     Datas* ds =malloc(sizeof(Datas));
     ds->kol_prim=kol_prim;
-    ds->kol_features=kol_features;
+    ds->kol_priz=kol_priz;
     ds->data=malloc(kol_prim*sizeof(float*));
     for(int i=0;i<kol_prim;i++)
     {
-        ds->data[i]=malloc(kol_features*sizeof(float));
+        ds->data[i]=malloc(kol_priz*sizeof(float));
     }
     ds->prav=calloc(kol_prim,sizeof(int));
 
@@ -115,11 +115,11 @@ Datas* load_data(char* file)
     {
         if(stolb==0)
         {
-            char *token=strtok(line,',');
+            char *token=strtok(line,",");
             while(token)
             {
                 strok++;
-                token=strtok(NULL,',');
+                token=strtok(NULL,",");
             }
             strok--;//значение,а не признак
         }
@@ -133,11 +133,11 @@ Datas* load_data(char* file)
     while(fgets(line,sizeof(line),f)&& prim_ind<stolb)
     {
         int priz_ind=0;
-        char *token=strtok(line,',');
+        char *token=strtok(line,",");
         while(token && priz_ind<strok)
         {
             ds->data[prim_ind][priz_ind++]=atof(token);
-            token=strtok(NULL,',');
+            token=strtok(NULL,",");
 
         }
         ds->data[prim_ind++][priz_ind]=(token) ? atoi(token):0;
@@ -181,7 +181,7 @@ static void best_split(Datas *ds,int *index,int kol_index,
         for(int g=0;g<kol_index-1;g++)
         {
             float znach =(values[order[g]]+values[order[g+1]])/2.0;
-            int left=0,int right=0;
+            int left=0,right=0;
             for(int j =0;j<kol_index;j++)
             {
                 if(values[j]<=znach)left++;
@@ -217,14 +217,14 @@ static void best_split(Datas *ds,int *index,int kol_index,
     }
 }
 
-static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth,int min_split,int num_priz_sub,int max_priz)
+static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth,int min_split,int kol_priz_sub,int max_priz)
 {
     Node *dub = malloc(sizeof(Node));
 
     int all_same=1;
-    for(int i = 1; i<num_index;i++)
+    for(int i = 1; i<kol_ind;i++)
     {
-        if(dub->prav[index[i]]!= dub->prav[index[0]])
+        if(ds->prav[index[i]]!= ds->prav[index[0]])
         {
             all_same=0;
             break;
@@ -236,7 +236,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
         int* prav_sub=malloc(num_index*sizeof(int));
         for(int i=0;i<num_index;i++)
         {
-            prav_sub[i]=dub->prav[index[i]];
+            prav_sub[i]=ds->prav[index[i]];
             
             dub->predict_class =popul_class(prav_sub,num_index);
             free(prav_sub);
@@ -263,7 +263,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
     float best_razb=0.0;
     float best_gain=-1.0;
 
-    best_split(ds,index,kol_index,priz_subset,num_priz_subset,&best_priz,&best_razb,&best_gain);
+    best_split(ds,index,kol_ind,priz_subset,kol_priz_sub,&best_priz,&best_razb,&best_gain);
 
     free(priz_subset);
 
@@ -271,18 +271,18 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
     {
         dub->uzel =1;
         int *prav_sub = malloc(kol_ind*sizeof(int));
-        for(int i=0; i<kol_ind;i++)prav_sub[i]=dub->prav[index[i]];
+        for(int i=0; i<kol_ind;i++)prav_sub[i]=ds->prav[index[i]];
         dub->predict_class= popul_class(prav_sub,kol_index);
         free(prav_sub);
         dub->left = dub->right = NULL;
         return dub;
     }
     dub->uzel=0;
-    dub->index_priznak= best_priznak
+    dub->index_priznak= best_priz;
     dub->znach=best_razb;
 
-    int left_ind=malloc(kol_priz*sizeof(int));
-    int right_ind=malloc(kol_priz*sizeof(int));
+    int* left_ind=malloc(kol_ind*sizeof(int));
+    int* right_ind=malloc(kol_ind*sizeof(int));
 
     int l_count =0, r_count = 0;
     for(int i=0;i<kol_index;i++)
@@ -300,8 +300,8 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
 
     if(!dub->left||!dub->right)
     {
-        free_node(dub->left);
-        free_node(dub->right);
+        free_Node(dub->left);
+        free_Node(dub->right);
         dub->uzel=1;
 
         int* prav_sub=malloc(kol_ind*sizeof(int));
@@ -309,7 +309,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
         {
             prav_sub[i]=ds->prav[index[i]];
         }
-        dub->predict_class=popul_ind(prav_sub,kol_ind);
+        dub->predict_class=popul_class(prav_sub,kol_ind);
 
         free(prav_sub);
         dub->left=dub->right=NULL;
@@ -321,7 +321,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
 void fit_tree(Tree* dub,Datas* ds)
 {
     int* index=malloc(ds->kol_prim*sizeof(int));
-    for(int=0;i<ds->kol_prim;i++)index[i]=i;
+    for(int i =0;i<ds->kol_prim;i++)index[i]=i;
 
     dub->koren=build_tree(ds,index,ds->kol_prim,0,dub->max_glub,dub->min_split,dub->kol_priz,ds->kol_priz);
     free(index);
@@ -335,7 +335,7 @@ static int predict_node(Node* node ,float *prim)
 }
 int predict_tree(Tree* dub,float* sample)
 {
-    return predict_node(dub->uzel;sample);
+    return predict_node(dub->uzel,sample);
 }
 
 int max_pred(int* schet_pred_tree,int kol_class)
