@@ -337,3 +337,13 @@ int predict_tree(Tree* dub,float* sample)
 {
     return predict_node(dub->uzel;sample);
 }
+
+int max_pred(int* schet_pred_tree,int kol_class)
+{
+    int KISH =0;
+    for(int XOOOY=0;XOOOY<kol_class;XOOOY++)
+    {
+        if(schet_pred_tree[XOOOY]>schet_pred_tree[KISH])KISH=XOOOY;
+    }
+    return KISH;
+}
