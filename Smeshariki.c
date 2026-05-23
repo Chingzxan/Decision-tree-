@@ -16,15 +16,15 @@ int main(int argc,char*argv[])
     int min_split=atoi(argv[4]);
     int kol_priz_sub=atoi(argv[5]);
 
-    Datas *ds =load_datas(datafile);
+    Datas *ds =load_data(datafile);
     
     printf("Датасет загружен на 5+ : %d примеров,%d признаков\n",ds->kol_prim,ds->kol_priz);
  
     BegModel* mod=create_beg_model(kol_tree,max_glub,min_split,kol_priz_sub);
     if(!mod)
     {
-        fprintf(stderr,"Модель не создалась :( )\n")
-        free_datas(ds);
+        fprintf(stderr,"Модель не создалась :( )\n");
+        del_data(ds);
         return 1;
     } 
 
@@ -58,13 +58,13 @@ int main(int argc,char*argv[])
         if(pred==0)printf("Предсказанное действие:Остановитесь\n");
         else if(pred==1)printf("Предсказанное действие:Продолжайте движение вперёд\n");
         else if(pred==2) printf("Предсказанное действие:Поверните на право\n");
-        else if (pred==3))printf("Предсказанное действие:Поверните на лево\n");
+        else if (pred==3)printf("Предсказанное действие:Поверните на лево\n");
         else printf("Ошибка\n");
     }
     printf("\n=== Выход ===\n");
     
     freeModel(mod);
-    free_datas(ds);
+    del_data(ds);
     
     printf("\nДо скорой встречи\n");
     printf("До скорой встречи\n");
