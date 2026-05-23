@@ -26,7 +26,7 @@ Tree* create_tree(int max_glub,int min_split,int kol_priz)
     Tree* dub=(Tree*)malloc(sizeof(Tree*));
 
     dub->koren=NULL;
-    dub->max_gulb=max_glub;
+    dub->max_glub=max_glub;
     dub->min_split=min_split;
     dub->kol_priz=kol_priz;
 
@@ -57,7 +57,7 @@ static int popul_class(int * prav,int num_prav)// какой класс боль
     {
         if(prav[i]>max_prav)max_prav=prav[i];
     }
-    int *count=calloc(max_prav+1,sizeoff(int));
+    int *count=calloc(max_prav+1,sizeof(int));
     for(int i=0;i<num_prav;i++)count[prav[i]]++;
     int popul=0;
     for(int i = 0;i<=max_prav;i++)
@@ -68,23 +68,23 @@ static int popul_class(int * prav,int num_prav)// какой класс боль
     return popul;
 }
 
-Datas* create_datas(int num_prim,int num_features)
+Datas* create_datas(int kol_prim,int kol_features)
 {
-    Datas* ds =malloc(sizeof(Dataset));
-    ds->num_prim=num_prim;
-    ds->num_features=num_features;
-    ds->data=malloc(num_prim*sizeof(float*));
-    for(int i=0;i<num_prim;i++)
+    Datas* ds =malloc(sizeof(Datas));
+    ds->kol_prim=kol_prim;
+    ds->kol_features=kol_features;
+    ds->data=malloc(kol_prim*sizeof(float*));
+    for(int i=0;i<kol_prim;i++)
     {
-        ds->data[i]=malloc(num_features*sizeof(float));
+        ds->data[i]=malloc(kol_features*sizeof(float));
     }
-    ds->prav=calloc(num_prim,sizeof(int));
+    ds->prav=calloc(kol_prim,sizeof(int));
 
     return ds;
 }
 void free_datas(Datas* ds)
 {
-    for(int i = 0,i<ds->num_prim;i++)
+    for(int i = 0;i<ds->kol_prim;i++)
     {
         free(ds->data[i]);
     }
@@ -110,7 +110,7 @@ Datas* load_data(char* file)
     FILE *f= fopen(file,"r");
     
     int stolb=0,strok=0;
-    char line[1000]
+    char line[1000];
     while(fgets(line,sizeof(line),f))
     {
         if(stolb==0)
@@ -161,7 +161,7 @@ static void best_split(Datas *ds,int *index,int kol_index,
     for(int i = 0;i<kol_sub;i++)
     {
         int feat=feature_sub[i];
-        float *values=malloc(kol_index*sizeof(ind));
+        float *values=malloc(kol_index*sizeof(int));
         for(int g =0;g<kol_index;g++)values[g]=ds->data[index[i]][feat];
 
         int *order=malloc(kol_index*sizeof(int));
