@@ -8,7 +8,7 @@ static Datas* bootstrap_sample(Datas* ds)
         int ind=rand()%ds->kol_prim;
         for(int g=0;g<ds->kol_priz;g++)
         {
-            sample->data[i][g]=ds->data[ind][f];
+            sample->data[i][g]=ds->data[ind][g];
         }
         sample->prav[i]=ds->prav[ind];
     }
@@ -26,12 +26,12 @@ BegModel* create_beg_model(int kol_tree,int max_glub,int min_split,int kol_priz_
     mod->kol_class=0;
     mod->kol_priz=0;
     mod->trees= calloc(kol_tree,sizeof(Tree*));
-    return model;
+    return mod;
 }
 void freeModel (BegModel* mod)
 {
     for(int i =0;i<mod->kol_tree;i++)
-        if(mod->trees[i])free_tree(mod->trees[i]);
+        if(mod->trees[i])del_tree(mod->trees[i]);
     free(mod->trees);
     free(mod);
 }
@@ -40,7 +40,7 @@ void fit_beg(BegModel * mod,Datas* ds)
 {
     srand(time(NULL));
     int max_prav=0;
-    for(int =0;i<ds->prim;i++)
+    for(int i =0;i<ds->kol_prim;i++)
     {
         if(ds->prav[i]>max_prav)max_prav=ds->prav[i];
     }
@@ -58,7 +58,7 @@ void fit_beg(BegModel * mod,Datas* ds)
         Tree* dub=create_tree(mod->max_glub,mod->min_split,mod ->kol_priz_sub);
         fit_tree(dub,sluch);
         mod->trees[i]=dub;
-        free_datas(sluch);
+        del_data(sluch);
         printf("Дерево %d/%d обучено🌲\n",i+1,mod->kol_tree);
     }
 }
@@ -67,12 +67,12 @@ int pred_beg(BegModel *mod ,float *sample)
 {
     int* schet_pred_tree=calloc(mod->kol_class,sizeof(int));
 
-    for(int =0;i<mod->kol_tree;i++)
+    for(int i =0;i<mod->kol_tree;i++)
     {
-        if(mod->tree[i])
+        if(mod->trees[i])
         {
-            int pred=predict_tree(model->trees[i],sample);
-            if(pred>=0 && pred< model->kol_class)schet_pred_tree[pred]++;
+            int pred=predict_tree(mod->trees[i],sample);
+            if(pred>=0 && pred< mod->kol_class)schet_pred_tree[pred]++;
 
         }
     }
