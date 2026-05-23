@@ -28,3 +28,10 @@ BegModel* create_beg_model(int kol_tree,int max_glub,int min_split,int kol_priz_
     mod->trees= calloc(kol_tree,sizeof(Tree*));
     return model;
 }
+void freeModel (BegModel* mod)
+{
+    for(int i =0;i<mod->kol_tree;i++)
+        if(mod->trees[i])free_tree(mod->trees[i]);
+    free(mod->trees);
+    free(mod);
+}
