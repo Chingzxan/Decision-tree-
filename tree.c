@@ -318,3 +318,22 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
 }
 
 
+void fit_tree(Tree* dub,Datas* ds)
+{
+    int* index=malloc(ds->kol_prim*sizeof(int));
+    for(int=0;i<ds->kol_prim;i++)index[i]=i;
+
+    dub->koren=build_tree(ds,index,ds->kol_prim,0,dub->max_glub,dub->min_split,dub->kol_priz,ds->kol_priz);
+    free(index);
+
+}
+static int predict_node(Node* node ,float *prim)
+{
+    if(node->uzel)return node->predict_class;
+    if(prim[node->index_priznak]<=node->znach)return predict_node(node->left,prim);
+    else return predict_node(node->right,prim);
+}
+int predict_tree(Tree* dub,float* sample)
+{
+    return predict_node(dub->uzel;sample);
+}

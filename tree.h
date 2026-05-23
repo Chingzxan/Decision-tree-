@@ -42,4 +42,7 @@ void random_priz(int *index,int n);
 
 Datas* load_data(char *file);
 
+void fit_tree(Tree* dub, Datas* ds);
+int predict_tree(Tree* dub,float* prim);
+
 #endif
