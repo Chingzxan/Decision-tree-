@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <time.h>
 typedef struct datas{
     int kol_prim; //количество примеров в датасте
     int kol_priz; //количество признаков
@@ -45,4 +45,5 @@ Datas* load_data(char *file);
 void fit_tree(Tree* dub, Datas* ds);
 int predict_tree(Tree* dub,float* prim);
 
+int max_pred(int* schet_pred_tree,int kol_class);
 #endif
