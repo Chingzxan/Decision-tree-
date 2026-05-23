@@ -55,6 +55,10 @@ void fit_beg(BegModel * mod,Datas* ds)
             fprintf(stderr,"Bootstrap ne razbil tree %d",i+1);
             continue;
         }
-        Tree* dub=create_tree
+        Tree* dub=create_tree(mod->max_glub,mox->min_split,mod ->kol_priz_sub);
+        fit_tree(dub,sluch);
+        mod->trees[i]=dub;
+        free_datas(sluch);
+        printf("TREE %d/%d obuchen🌲",i+1,mod->kol_tree);
     }
 }
