@@ -246,5 +246,75 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
         }
 
     }
-    
+    int* priz_pool=malloc(max_priz * sizeof(int));
+
+    for(int i=0;i<max_priz;i++)priz_pool[i]=i;
+    random_priz(priz_pool,max_priz);
+
+    int* priz_subset =malloc(num_priz_sub*sizeof(int));
+    for(int i=0;i<num_priz_sub;i++)
+    {
+        priz_subset[i]=priz_pool[i];
+    }
+    free(priz_pool);
+
+    int best_priz=-1;
+
+    float best_razb=0.0;
+    float best_gain=-1.0;
+
+    best_split(ds,index,kol_index,priz_subset,num_priz_subset,&best_priz,&best_razb,&best_gain);
+
+    free(priz_subset);
+
+    if(best_priz ==-1 || best_gain <= 1e-6)
+    {
+        dub->uzel =1;
+        int *prav_sub = malloc(kol_ind*sizeof(int));
+        for(int i=0; i<kol_ind;i++)prav_sub[i]=dub->prav[index[i]];
+        dub->predict_class= popul_class(prav_sub,kol_index);
+        free(prav_sub);
+        dub->left = dub->right = NULL;
+        return dub;
+    }
+    dub->uzel=0;
+    dub->index_priznak= best_priznak
+    dub->znach=best_razb;
+
+    int left_ind=malloc(kol_priz*sizeof(int));
+    int right_ind=malloc(kol_priz*sizeof(int));
+
+    int l_count =0, r_count = 0;
+    for(int i=0;i<kol_index;i++)
+    {
+        if(ds->data[index[i]][best_priz]<=best_razb)
+         left_ind[l_count++]=index[i];
+        else
+         right_ind[r_count++]=index[i];
+
+    }
+    dub->left = build_tree(ds,left_ind,l_count,depth+1,max_depth,min_split,kol_priz_sub,max_priz);
+    dub->right = build_tree(ds,right_ind,r_count,depth+1,max_depth,min_split,kol_priz_sub,max_priz);
+    free(left_ind);
+    free(right_ind);
+
+    if(!dub->left||!dub->right)
+    {
+        free_node(dub->left);
+        free_node(dub->right);
+        dub->uzel=1;
+
+        int* prav_sub=malloc(kol_ind*sizeof(int));
+        for(int i=0;i<kol_ind;i++)
+        {
+            prav_sub[i]=ds->prav[index[i]];
+        }
+        dub->predict_class=popul_ind(prav_sub,kol_ind);
+
+        free(prav_sub);
+        dub->left=dub->right=NULL;
+    }
+    return dub;
 }
+
+
