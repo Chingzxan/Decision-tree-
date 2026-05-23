@@ -55,10 +55,27 @@ void fit_beg(BegModel * mod,Datas* ds)
             fprintf(stderr,"Bootstrap ne razbil tree %d",i+1);
             continue;
         }
-        Tree* dub=create_tree(mod->max_glub,mox->min_split,mod ->kol_priz_sub);
+        Tree* dub=create_tree(mod->max_glub,mod->min_split,mod ->kol_priz_sub);
         fit_tree(dub,sluch);
         mod->trees[i]=dub;
         free_datas(sluch);
         printf("TREE %d/%d obuchen🌲",i+1,mod->kol_tree);
     }
+}
+
+int pred_beg(BegModel *mod ,float *sample)
+{
+    int* schet_pred_tree=calloc(mod->kol_class,sizeof(int));
+
+    for(int =0;i<mod->kol_tree;i++)
+    {
+        if(mod->tree[i])
+        {
+            int pred=predict_tree(model->trees[i],sample);
+            if(pred>=0 && pred< model->kol_class)schet_pred_tree[pred]++;
+
+        }
+    }
+    int res=max_pred(schet_pred_tree,mod->kol_class);
+    return res;
 }
