@@ -35,7 +35,7 @@ Tree* create_tree(int max_glub,int min_split,int kol_priz)
 
 void free_Node(Node* node)
 {
-    if(!node)return 0;
+    if(!node)return;
     if(node->uzel!=0)
     {
         free(node->left);

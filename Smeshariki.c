@@ -18,18 +18,18 @@ int main(int argc,char*argv[])
 
     Datas *ds =load_data(datafile);
     
-    printf("Датасет загружен на 5+ : %d примеров,%d признаков\n",ds->kol_prim,ds->kol_priz);
+    printf("\nДатасет загружен на 5+ : %d примеров,%d признаков\n\n",ds->kol_prim,ds->kol_priz);
  
     BegModel* mod=create_beg_model(kol_tree,max_glub,min_split,kol_priz_sub);
     if(!mod)
     {
-        fprintf(stderr,"Модель не создалась :( )\n");
+        fprintf(stderr,"\nМодель не создалась :( )\n");
         del_data(ds);
         return 1;
     } 
 
     fit_beg(mod,ds);
-    printf("Оуу да ,модель загрузилась успешно\n");
+    printf("\nОуу да ,модель загрузилась успешно\n");
 
     printf("\n=== Предсказание команды ===\n");
     printf("Введите 3 числа(стороны слева  ,справо и центр) через пробел,или напишите 'q',чтобы выйти\n ");
