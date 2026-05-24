@@ -148,7 +148,7 @@ Datas* load_data(char* file)//загрузка датасета
 }
 
 
-static void best_split(Datas *ds,int *index,int kol_index, //Лучшее разбиение дерева,для наибольшего gini
+static void best_split(Datas *ds,int *index,int kol_index), //Лучшее разбиение дерева,для наибольшего gini
     int* feature_sub,int kol_sub,int* best_feature,float* best_znach,float* best_gain){
 
     *best_gain = -1.0;
