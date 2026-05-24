@@ -1,6 +1,6 @@
 #include "tree.h"
 
-static float gini(int *prav,int num_prav)
+static float gini(int *prav,int num_prav)//Критерий gini
 {
     if (num_prav ==0)return 0.0;
     int max_class=0;
@@ -21,7 +21,7 @@ static float gini(int *prav,int num_prav)
     return g;
 }
 
-Tree* create_tree(int max_glub,int min_split,int kol_priz)
+Tree* create_tree(int max_glub,int min_split,int kol_priz)// создание дерева
 {
     Tree* dub=(Tree*)malloc(sizeof(Tree*));
 
@@ -33,7 +33,7 @@ Tree* create_tree(int max_glub,int min_split,int kol_priz)
     return dub;
 }
 
-void free_Node(Node* node)
+void free_Node(Node* node)//удаление узла 
 {
     if(!node)return;
     if(node->uzel!=0)
@@ -44,7 +44,7 @@ void free_Node(Node* node)
     free(node);
 }
 
-void del_tree(Tree* dub)
+void del_tree(Tree* dub)//удаление Дерева
 {
     free_Node(dub->koren);
     free(dub);
@@ -69,7 +69,7 @@ static int popul_class(int * prav,int num_prav)// какой класс боль
     return popul;
 }
 
-Datas* create_datas(int kol_prim,int kol_priz)
+Datas* create_datas(int kol_prim,int kol_priz)//Создание датасета с данными для обучения
 {
     Datas* ds =malloc(sizeof(Datas));
     ds->kol_prim=kol_prim;
@@ -83,7 +83,7 @@ Datas* create_datas(int kol_prim,int kol_priz)
 
     return ds;
 }
-void del_data(Datas* ds)
+void del_data(Datas* ds)//Удаление датасета 
 {
     for(int i = 0;i<ds->kol_prim;i++)
     {
@@ -95,7 +95,7 @@ void del_data(Datas* ds)
 }
 
 
-void random_priz(int *index,int n)//рандомное количество признаков 
+void random_priz(int *index,int n)//рандомное распределение признаков 
 {
     for(int i=n-1;i>0;i--)
     {
@@ -106,7 +106,7 @@ void random_priz(int *index,int n)//рандомное количество пр
     }
 }
 
-Datas* load_data(char* file)
+Datas* load_data(char* file)//загрузка датасета 
 {
     FILE *f= fopen(file,"r");
     
@@ -148,7 +148,7 @@ Datas* load_data(char* file)
 }
 
 
-static void best_split(Datas *ds,int *index,int kol_index, 
+static void best_split(Datas *ds,int *index,int kol_index, //Лучшее разбиение дерева,для наибольшего gini
     int* feature_sub,int kol_sub,int* best_feature,float* best_znach,float* best_gain){
 
     *best_gain = -1.0;
@@ -218,7 +218,7 @@ static void best_split(Datas *ds,int *index,int kol_index,
     }
 }
 
-static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth,int min_split,int kol_priz_sub,int max_priz)
+static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth,int min_split,int kol_priz_sub,int max_priz)//Построение дерева
 {
     Node *dub = malloc(sizeof(Node));
 
@@ -251,7 +251,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
 
     for(int i=0;i<max_priz;i++)priz_pool[i]=i;
     random_priz(priz_pool,max_priz);
-
+    //kol_priz_sub- сколько признаков берём
     int* priz_subset =malloc(kol_priz_sub*sizeof(int));
     for(int i=0;i<kol_priz_sub;i++)
     {
@@ -319,7 +319,7 @@ static Node* build_tree(Datas* ds,int* index,int kol_ind,int depth,int max_depth
 }
 
 
-void fit_tree(Tree* dub,Datas* ds)
+void fit_tree(Tree* dub,Datas* ds)//обучение
 {
     int* index=malloc(ds->kol_prim*sizeof(int));
     for(int i =0;i<ds->kol_prim;i++)index[i]=i;
@@ -328,18 +328,18 @@ void fit_tree(Tree* dub,Datas* ds)
     free(index);
 
 }
-static int predict_node(Node* node ,float *prim)
+static int predict_node(Node* node ,float *prim)//предсказание одного значения
 {
     if(node->uzel)return node->predict_class;
     if(prim[node->index_priznak]<=node->znach)return predict_node(node->left,prim);
     else return predict_node(node->right,prim);
 }
-int predict_tree(Tree* dub,float* sample)
+int predict_tree(Tree* dub,float* sample)//предсказание дерева
 {
     return predict_node(dub->koren,sample);
 }
 
-int max_pred(int* schet_pred_tree,int kol_class)
+int max_pred(int* schet_pred_tree,int kol_class)//какое предсказание встречается больше всего
 {
     int KISH =0;
     for(int XOOOY=1;XOOOY<kol_class;XOOOY++)

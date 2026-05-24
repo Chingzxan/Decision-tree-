@@ -3,7 +3,7 @@
 
 #include "tree.h"
 
-typedef struct{
+typedef struct{//Беггинг модель
     Tree **trees;
     int kol_tree;
     int max_glub;

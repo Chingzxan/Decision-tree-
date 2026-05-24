@@ -1,6 +1,6 @@
 #include "beging.h"
 
-static Datas* bootstrap_sample(Datas* ds)
+static Datas* bootstrap_sample(Datas* ds)//возвращает рандомные примеры для обучения
 {
     Datas* sample=create_datas(ds->kol_prim,ds->kol_priz);
     for(int i=0;i<ds->kol_prim;i++)
@@ -15,7 +15,7 @@ static Datas* bootstrap_sample(Datas* ds)
     return sample;
 
 }
-BegModel* create_beg_model(int kol_tree,int max_glub,int min_split,int kol_priz_sub)
+BegModel* create_beg_model(int kol_tree,int max_glub,int min_split,int kol_priz_sub)//создание бег модели
 {
     BegModel* mod=malloc(sizeof(BegModel));
 
@@ -28,7 +28,7 @@ BegModel* create_beg_model(int kol_tree,int max_glub,int min_split,int kol_priz_
     mod->trees= calloc(kol_tree,sizeof(Tree*));
     return mod;
 }
-void freeModel (BegModel* mod)
+void freeModel (BegModel* mod)//удаление модели
 {
     for(int i =0;i<mod->kol_tree;i++)
         if(mod->trees[i])del_tree(mod->trees[i]);
@@ -36,7 +36,7 @@ void freeModel (BegModel* mod)
     free(mod);
 }
 
-void fit_beg(BegModel * mod,Datas* ds)
+void fit_beg(BegModel * mod,Datas* ds)//обучает каждое дерево с bootstrap и сохраняет 
 {
     srand(time(NULL));
     int max_prav=0;
@@ -63,7 +63,7 @@ void fit_beg(BegModel * mod,Datas* ds)
     }
 }
 
-int pred_beg(BegModel *mod ,float *sample)
+int pred_beg(BegModel *mod ,float *sample)//предсказание
 {
     int* schet_pred_tree=calloc(mod->kol_class,sizeof(int));
 

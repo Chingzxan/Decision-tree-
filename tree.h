@@ -12,7 +12,7 @@ typedef struct datas{
     int *prav; // правильный вариант
 }Datas;
 
-typedef struct Node //куда что будет относиться
+typedef struct Node //
 {
     int uzel;
     int predict_class;

@@ -18,7 +18,7 @@ int main(int argc,char*argv[])
 
     Datas *ds =load_data(datafile);
     
-    printf("\nДатасет загружен на 5+ : %d примеров,%d признаков\n\n",ds->kol_prim,ds->kol_priz);
+    printf("\nДатасет загружен на 5+ : %d примеров,%d признаков\n",ds->kol_prim,ds->kol_priz);
  
     BegModel* mod=create_beg_model(kol_tree,max_glub,min_split,kol_priz_sub);
     if(!mod)
