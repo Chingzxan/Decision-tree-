@@ -12,7 +12,7 @@ static float gini(int *prav,int num_prav)//Критерий gini
     int *count =calloc(max_class+1,sizeof(int));
     for(int i=0;i<num_prav;i++)count[prav[i]]++;//сколько каждого значения
     
-    for(int i=0;i<max_class;i++)
+    for(int i=0;i<=max_class;i++)
     {
         float a = (float)count[i]/num_prav;//количество одного признака делим на всех 
         g -= a*a; //возводим в квадрат
@@ -23,7 +23,7 @@ static float gini(int *prav,int num_prav)//Критерий gini
 
 Tree* create_tree(int max_glub,int min_split,int kol_priz)// создание дерева
 {
-    Tree* dub=(Tree*)malloc(sizeof(Tree*));
+    Tree* dub=(Tree*)malloc(sizeof(Tree));
 
     dub->koren=NULL;
     dub->max_glub=max_glub;
@@ -36,10 +36,10 @@ Tree* create_tree(int max_glub,int min_split,int kol_priz)// создание д
 void free_Node(Node* node)//удаление узла 
 {
     if(!node)return;
-    if(node->uzel!=0)
+    if(node->uzel==0)
     {
-        free(node->left);
-        free(node->right);
+        free_Node(node->left);
+        free_Node(node->right);
     }
     free(node);
 }
@@ -163,7 +163,7 @@ static void best_split(Datas *ds,int *index,int kol_index, //Лучшее раз
     {
         int feat=feature_sub[i];
         float *values=malloc(kol_index*sizeof(float));
-        for(int g =0;g<kol_index;g++)values[g]=ds->data[index[i]][feat];
+        for(int g =0;g<kol_index;g++)values[g]=ds->data[index[g]][feat];
 
         int *order=malloc(kol_index*sizeof(int));
         for(int g=0;g<kol_index;g++)order[g]=g;
