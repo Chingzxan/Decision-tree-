@@ -137,5 +137,12 @@ void random_priz(int *index,int n)== рандомное распределени
 
 ---
 
+##Компиляция
+
+Компилируем файлы Smeshariki.c. ,beging.c и tree.c в один исполняющий файл ,например robot
+<img width="375" height="47" alt="image" src="https://github.com/user-attachments/assets/b5bb8718-68a6-4d0a-b236-c259b23c5653" />
+
+Затем запускаем ,вводя нужные параметры
+<img width="288" height="47" alt="image" src="https://github.com/user-attachments/assets/16786159-522b-4a8d-9f22-0bf5e52e36b1" />
 
 
