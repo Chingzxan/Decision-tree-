@@ -139,11 +139,24 @@ void random_priz(int *index,int n)== рандомное распределени
 
 ## Компиляция
 
+1. Ручной 
+
 Компилируем файлы Smeshariki.c. ,beging.c и tree.c в один исполняющий файл ,например robot
 <img width="375" height="47" alt="image" src="https://github.com/user-attachments/assets/b5bb8718-68a6-4d0a-b236-c259b23c5653" />
 
 Затем запускаем ,вводя нужные параметры
 <img width="288" height="47" alt="image" src="https://github.com/user-attachments/assets/16786159-522b-4a8d-9f22-0bf5e52e36b1" />
 
+
+2. Через make:
+    Make ,а затем как ручной:
+    ![alt text](image.png)
+
+    ![alt text](image-1.png)
+
+
+    Или make run ARGS="агрументы для дерева":
+
+    ![alt text](image-2.png)
 ---
 # Конец 
